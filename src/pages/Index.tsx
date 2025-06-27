@@ -41,7 +41,7 @@ const Index = () => {
   const storedTab = localStorage.getItem("activeTab");
   if (storedTab) {
     setActiveTab(storedTab);
-    localStorage.removeItem("activeTab"); // clean up after use
+    localStorage.removeItem("activeTab"); 
   }
 }, []);
 
