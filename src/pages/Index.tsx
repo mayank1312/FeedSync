@@ -3,7 +3,7 @@ import { FeedbackForm } from "@/components/FeedbackForm";
 import { FeedbackDashboard } from "@/components/FeedbackDashboard";
 import { Header } from "@/components/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import { Footer } from "@/components/Footer";
 export interface Feedback {
   status: string;
   id: string;
@@ -67,49 +67,51 @@ const Index = () => {
 
 
 
-  return (
-    <div className="min-h-screen transition-colors duration-300 bg-white text-slate-800 dark:bg-slate-900 dark:text-white">
-      <Header />
-      <main className="container mx-auto px-4 py-8 mt-20 ">
-        <div className="max-w-6xl mx-auto">
-       <Tabs
-         value={activeTab}
-        onValueChange={(value) => {
-        setActiveTab(value);
-           if (value === "dashboard") {
-              fetchFeedbacks(); 
-              }
-        }}
+return (
+  <div className="flex flex-col min-h-screen transition-colors duration-300 bg-white text-slate-800 dark:bg-slate-900 dark:text-white">
+    <Header />
+    
+    <main className="flex-1 container mx-auto px-4 py-8 mt-20">
+      <div className="max-w-6xl mx-auto">
+        <Tabs
+          value={activeTab}
+          onValueChange={(value) => {
+            setActiveTab(value);
+            if (value === "dashboard") {
+              fetchFeedbacks();
+            }
+          }}
         >
+          <TabsList className="flex justify-center gap-4 mb-8 bg-slate-100/70 dark:bg-slate-800/70 p-1 rounded-xl shadow-md w-fit mx-auto">
+            <TabsTrigger
+              value="submit"
+              className="px-6 py-2 rounded-lg font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-white data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all duration-200"
+            >
+              Submit Feedback
+            </TabsTrigger>
+            <TabsTrigger
+              value="dashboard"
+              className="px-6 py-2 rounded-lg font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-white data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all duration-200"
+            >
+              View Dashboard
+            </TabsTrigger>
+          </TabsList>
 
-            <TabsList className="flex justify-center gap-4 mb-8 bg-slate-100/70 dark:bg-slate-800/70 p-1 rounded-xl shadow-md w-fit mx-auto">
-  <TabsTrigger
-    value="submit"
-    className="px-6 py-2 rounded-lg font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-white data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all duration-200"
-  >
-    Submit Feedback
-  </TabsTrigger>
-  <TabsTrigger
-    value="dashboard"
-    className="px-6 py-2 rounded-lg font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-white data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all duration-200"
-  >
-    View Dashboard
-  </TabsTrigger>
-</TabsList>
+          <TabsContent value="submit" className="animate-fade-in">
+            <FeedbackForm onSubmit={handleSubmitFeedback} />
+          </TabsContent>
 
+          <TabsContent key={activeTab === "dashboard" ? Date.now() : undefined} value="dashboard" className="animate-fade-in">
+            <FeedbackDashboard feedbacks={feedbacks} />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </main>
 
-            <TabsContent value="submit" className="animate-fade-in">
-              <FeedbackForm onSubmit={handleSubmitFeedback} />
-            </TabsContent>
+    <Footer />
+  </div>
+);
 
-             <TabsContent key={activeTab === "dashboard" ? Date.now() : undefined} value="dashboard" className="animate-fade-in">
-              <FeedbackDashboard feedbacks={feedbacks} />
-             </TabsContent>
-          </Tabs>
-        </div>
-      </main>
-    </div>
-  );
 };
 
 export default Index;

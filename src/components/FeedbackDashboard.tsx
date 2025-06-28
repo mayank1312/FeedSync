@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -26,6 +26,11 @@ export const FeedbackDashboard = ({ feedbacks }: FeedbackDashboardProps) => {
   const [filterDate, setFilterDate] = useState<string>("");
   const [resolvingId, setResolvingId] = useState<string | null>(null);
   const [localFeedbacks, setLocalFeedbacks] = useState<Feedback[]>(feedbacks);
+
+  // ✅ Keep local feedbacks updated when props change
+  useEffect(() => {
+    setLocalFeedbacks(feedbacks);
+  }, [feedbacks]);
 
   const handleResolve = async (id: string) => {
     const feedback = localFeedbacks.find((f) => f.id === id);
@@ -70,8 +75,8 @@ export const FeedbackDashboard = ({ feedbacks }: FeedbackDashboardProps) => {
 
       const matchesCategory = categoryFilter === "all" || feedback.category === categoryFilter;
 
-      const feedbackDate = new Date(feedback.date).toISOString().split("T")[0];
-      const matchesDate = filterDate ? feedbackDate === filterDate : true;
+      const feedbackDate = new Date(feedback.date).toLocaleDateString("en-CA");
+      const matchesDate = filterDate ? feedbackDate === filterDate : true;      
 
       return matchesSearch && matchesCategory && matchesDate;
     })
@@ -105,7 +110,6 @@ export const FeedbackDashboard = ({ feedbacks }: FeedbackDashboardProps) => {
       {/* Filters */}
       <div className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm rounded-lg p-6 border border-slate-200 dark:border-slate-700 space-y-4">
         <div className="flex flex-col md:flex-row gap-4 md:items-end md:flex-wrap">
-          {/* Search */}
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
             <Input
@@ -116,7 +120,6 @@ export const FeedbackDashboard = ({ feedbacks }: FeedbackDashboardProps) => {
             />
           </div>
 
-          {/* Category */}
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
             <SelectTrigger className="w-48 h-10">
               <Filter className="h-4 w-4 mr-2" />
@@ -130,7 +133,6 @@ export const FeedbackDashboard = ({ feedbacks }: FeedbackDashboardProps) => {
             </SelectContent>
           </Select>
 
-          {/* Sort */}
           <Select
             value={`${sortBy}-${sortOrder}`}
             onValueChange={(value) => {
@@ -151,7 +153,6 @@ export const FeedbackDashboard = ({ feedbacks }: FeedbackDashboardProps) => {
             </SelectContent>
           </Select>
 
-          {/* Date Filter */}
           <div className="flex flex-col gap-1">
             <Label className="text-slate-600 dark:text-slate-300 text-sm font-medium">Filter by Date</Label>
             <Input
