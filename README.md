@@ -19,6 +19,15 @@ A modern, elegant, and efficient **User Feedback System** built with **React**, 
 - 🎨 Elegant, responsive UI
 ---
 
+## 📸 Preview
+
+### 🌟 Feedback Form
+![Form Screenshot](public/Submit.png)
+
+### 🌟 Feedback Dashboard
+![Dashboard Screenshot](public/dashboard.png)
+
+
 ## 🧑‍💻 Tech Stack
 
 | Frontend        | Backend         | Database        | Others                    |
