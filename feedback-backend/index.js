@@ -39,18 +39,19 @@ app.get('/api/feedback', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch feedbacks' });
   }
 });
-app.delete("/api/feedback/:id", async (req, res) => {
+app.patch("/api/feedback/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    await prisma.feedback.delete({
+    const updated = await prisma.feedback.update({
       where: { id },
+      data: { status: "done" },
     });
 
-    res.status(200).json({ success: true });
+    res.status(200).json(updated);
   } catch (err) {
-    console.error("DELETE /api/feedback/:id error:", err);
-    res.status(500).json({ error: "Failed to delete feedback" });
+    console.error("Update failed:", err);
+    res.status(500).json({ error: "Failed to update status" });
   }
 });
 

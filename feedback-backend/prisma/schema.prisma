@@ -14,4 +14,5 @@ model Feedback {
   message   String
   category  String
   createdAt DateTime @default(now())
+  status    String   @default("pending")
 }
